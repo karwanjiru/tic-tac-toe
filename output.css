@@ -588,6 +588,47 @@ video {
   }
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.w-8 {
+  width: 2rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.bg-fuchsia-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 70 239 / var(--tw-bg-opacity));
+}
+
+.bg-slate-950 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(2 6 23 / var(--tw-bg-opacity));
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
 * {
   margin: 0px;
   padding: 0px;
@@ -628,8 +669,42 @@ body {
 
 .player-X {
   background-color: red;
+  animation: pl-x 2s ease-out 0s forwards;
 }
 
-.default {
-  background-color: blue;
+.rolling-O {
+  display: flex;
+  justify-content: center;
+  animation: pl-O 2s linear 0s forwards;
+}
+
+.rolling-X {
+  display: flex;
+  justify-content: center;
+  animation: pl-X 2s linear 0s forwards;
+}
+
+@keyframes pl-X {
+  from{
+    justify-content: center;
+  }
+
+  to {
+    justify-content: flex-start;
+  }
+}
+
+@keyframes pl-O {
+  from{
+    justify-content: center;
+  }
+
+  to {
+    justify-content:flex-end;
+  }
+}
+
+.fiftyWidth {
+  max-width: 50%;
+  margin:0 auto;
 }

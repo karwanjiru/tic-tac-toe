@@ -37,14 +37,46 @@ body {
     background-color: black;
 }
 
+
 .player-O {
     background-color: chocolate;
+    
 }
 .player-X {
     background-color: red;
+    animation: pl-x 2s ease-out 0s forwards;
 }
 
+.rolling-O {
+    display: flex;
+    justify-content: center;
+    animation: pl-O 2s linear 0s forwards;
+}
 
-.default {
-    background-color: blue;
+.rolling-X {
+    display: flex;
+    justify-content: center;
+    animation: pl-X 2s linear 0s forwards;
+}
+
+@keyframes pl-X {
+    from{
+        justify-content: center;
+    }
+    to {
+        justify-content: flex-start;
+    }
+}
+
+@keyframes pl-O {
+    from{
+       justify-content: center;
+    } to {
+        justify-content:flex-end;
+    }
+}
+
+.fiftyWidth {
+    max-width: 50%;
+    margin:0 auto;
 }

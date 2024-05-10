@@ -5,10 +5,12 @@ let gameActive = true;
 let cells = Array.from(document.querySelectorAll(".cell"))
 let restartBtn = document.querySelector("#restart-btn");
 let playerTurnEl = document.getElementById("PT-el")
-playerTurnEl.classList.add(`player-${currentPlayer}`)
+let rollingEl = document.getElementById("rolling-el")
+let rollingContainerEl = document.getElementById("rollingContainer-el")
+playerTurnEl.classList.add(`player-${currentPlayer}`)//set animation to x
+playerTurnEl.innerHTML = `player x, your turn`
 
-
-// what happens when a cell is clicked; if a cell is empty and the game is not over put an X
+//FUNCTIONS
 function cellClicked(cellIndex) {
     if (gameBoard[cellIndex] === '' && gameActive === true) {
         gameBoard[cellIndex] = currentPlayer;
@@ -23,21 +25,15 @@ function cellClicked(cellIndex) {
     }
     playerTurnEl.classList.remove('player-X');
     playerTurnEl.classList.remove('player-O');
+    rollingContainerEl.classList.remove('rolling-X');
+    rollingContainerEl.classList.remove('rolling-O');
     console.log(currentPlayer)
     console.log(playerTurnEl.classList)
     playerTurnEl.classList.add(`player-${currentPlayer}`)
-}
-// when restart button is clickfed
-
-function render() {
-    gameBoard = ['', '', '', '', '', '', '', '', ''];
-    currentPlayer = "X";
-    
+    rollingContainerEl.classList.add(`rolling-${currentPlayer}`)
 }
 
-restartBtn.addEventListener("click", function() {
-   clear()
-})
+
 
 const winningConditions = [
     [0, 1, 2],
@@ -56,3 +52,9 @@ function clear() {
         cells[i].textContent = '';
     }
 }
+
+//EVENTS
+restartBtn.addEventListener("click", function() {
+    clear()
+ })
+ 
