@@ -1,11 +1,12 @@
 // Initialize game variables
-let currentPlayer = 'X';
+let currentPlayer = 1;
 let gameOver = false;
 let board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
 
 // Get the board and restart button elements
 const boardEl = document.getElementById('board-el');
 const restartBtn = document.getElementById('restart-btn');
+const currentPlayerEl = document.getElementById('current-player-el');
 
 // Function to render the game board
 function renderBoard() {
@@ -25,6 +26,9 @@ function renderBoard() {
         // Append the cell to the board
         boardEl.appendChild(cellEl);
     }
+
+    // Display the current player
+    currentPlayerEl.textContent = `Current player: ${currentPlayer}`;
 }
 
 // Function to handle cell clicks
@@ -43,21 +47,19 @@ function handleCellClick(index) {
 
     // Check if the current player has won
     if (checkWin(currentPlayer)) {
-        console.log(`${currentPlayer} wins!`);
+        console.log(`Player ${currentPlayer} wins!`);
         gameOver = true;
-        resetBoard();
     }
 
     // Check if the board is full (draw)
     else if (isBoardFull()) {
         console.log('It\'s a draw!');
         gameOver = true;
-        resetBoard();
     }
 
     // Switch to the other player
     else {
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
     }
 }
 
@@ -65,21 +67,21 @@ function handleCellClick(index) {
 function checkWin(player) {
     // Check rows
     for (let i = 0; i < 3; i++) {
-        if (board[i] === player && board[i + 3] === player && board[i + 6] === player) {
+        if (board[i] === player.toString() && board[i + 3] === player.toString() && board[i + 6] === player.toString()) {
             return true;
         }
     }
 
     // Check columns
     for (let i = 0; i < 3; i++) {
-        if (board[i] === player && board[i + 3 * 1] === player && board[i + 3 * 2] === player) {
+        if (board[i] === player.toString() && board[i + 3 * 1] === player.toString() && board[i + 3 * 2] === player.toString()) {
             return true;
         }
     }
 
     // Check diagonals
-    if ((board[0] === player && board[4] === player && board[8] === player) ||
-        (board[2] === player && board[4] === player && board[6] === player)) {
+    if ((board[0] === player.toString() && board[4] === player.toString() && board[8] === player.toString()) ||
+        (board[2] === player.toString() && board[4] === player.toString() && board[6] === player.toString())) {
         return true;
     }
 
@@ -94,7 +96,7 @@ function isBoardFull() {
 // Function to reset the board
 function resetBoard() {
     board.fill(' ');
-    currentPlayer = 'X';
+    currentPlayer = 1;
     gameOver = false;
     renderBoard();
 }
