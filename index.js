@@ -2,40 +2,46 @@
 let currentPlayer = "X";
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let gameActive = true;
-let cells = document.querySelectorAll(".cell");
+let cells = Array.from(document.querySelectorAll(".cell"))
 let restartBtn = document.querySelector("#restart-btn");
+let playerTurnEl = document.getElementById("PT-el")
+playerTurnEl.classList.add(`player-${currentPlayer}`)
+
 
 // what happens when a cell is clicked; if a cell is empty and the game is not over put an X
 function cellClicked(cellIndex) {
     if (gameBoard[cellIndex] === '' && gameActive === true) {
         gameBoard[cellIndex] = currentPlayer;
-         
-        "Cell clicked:", cellIndex;
-        "Updated game board:", gameBoard;
         cells[cellIndex].textContent = currentPlayer;
-        //switching between player X and O, FEATURE;have a pane/or box to render the current player in box;we could change backgrounds boxcolor etc, 
         currentPlayer = currentPlayer === "X" ? "O" : "X";
+        if (currentPlayer === "X") {
+            message = `player x, your turn`
+        } else {
+            message = `player y, your turn`
+        }
+        playerTurnEl.innerHTML = message
     }
+    playerTurnEl.classList.remove('player-X');
+    playerTurnEl.classList.remove('player-O');
+    console.log(currentPlayer)
+    console.log(playerTurnEl.classList)
+    playerTurnEl.classList.add(`player-${currentPlayer}`)
 }
 // when restart button is clickfed
 
-restartBtn.addEventListener("click", function() {
+function render() {
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     currentPlayer = "X";
-    cells.textContent = '';
-    gameActive = true;
-})
+    
+}
 
-/*function for current player. I dont know where we'll fix this function but whatever*/
-/* function changePlayer() {
-    currentPlayer = currentPlayer === "X"? "O" : "X"; */
-    //display a message below
-    /* STATUSDISPLAY.TEXTCONTENT = MESSAGE FOR CURRENT PLAYER TURN
-} */
+restartBtn.addEventListener("click", function() {
+   clear()
+})
 
 const winningConditions = [
     [0, 1, 2],
-    [3, 4, 5],q
+    [3, 4, 5],
     [6, 7, 8],
     [1, 4, 7],
     [2, 5, 6],
@@ -44,3 +50,9 @@ const winningConditions = [
     [2, 4, 6]
 ];
 
+function clear() {
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    for (let i=0; i<cells.length; i++) {
+        cells[i].textContent = '';
+    }
+}
