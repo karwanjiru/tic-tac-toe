@@ -1,79 +1,44 @@
-const player1 = 'X'
-const player2 = 'O'
-const restartBtn = document.getElementById("restart-btn")
-let currentPlayer = player1
-// Initial board state
-let boardState = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+// VARIABLES
+let currentPlayer = "X";
+let gameBoard = ['', '', '', '', '', '', '', '', ''];
+let gameActive = true;
+let cells = document.querySelectorAll(".cell");
+let restartBtn = document.querySelectorAll("#restart-btn");
 
-// when cell is clicked function
-function handleCellClick(index) {
-    if (boardState[index] === " ") {
-        boardState[index] = currentPlayer;
-        renderBoard();
-        if (checkWin(currentPlayer)) {
-            console.log(currentPlayer + ' wins!');
-            resetBoard();
-        } else if (isBoardFull()) {
-            console.log('It\'s a draw!');
-        } else {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
+// what happens when a cell is clicked
+function cellClicked(cellIndex) {
+    if (gameBoard[cellIndex] === '' && gameActive === true) {
+        gameBoard[cellIndex] = currentPlayer;
+         
+        "Cell clicked:", cellIndex;
+        "Updated game board:", gameBoard;
+        cells[cellIndex].textContent = currentPlayer;
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
     }
 }
+// when restart button is clickfed
 
-// Function to render the game board
-function renderBoard() {
-    const boardEl = document.getElementById("board-el");
-    boardEl.innerHTML = " ";
-    boardState.forEach((cell, index) => {
-        const cellElement = document.createElement('div');
-        cellElement.classList.add('cell');
-        cellElement.textContent = cell;
-        cellElement.addEventListener('click', () => handleCellClick(index));
-        boardEl.appendChild(cellElement);
-    });
-}
+restartBtn.addEventListener("click", function() {
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = "X";
+    cells.textContent = '';
+    gameActive = true;
+})
 
-// Function to check if a player has won
-function checkWin(player) {
-    // Check rows
-    for (let i = 0; i < 3; i++) {
-        if (boardState[i] === player && boardState[i + 3] === player && boardState[i + 6] === player) {
-            return true;
-        }
-    }
-    // Check columns
-    for (let i = 0; i < 3; i++) {
-        if (boardState[i] === player && boardState[i + 1] === player && boardState[i + 2] === player) {
-            return true;
-        }
-    }
-    // Check diagonals
-    if ((boardState[0] === player && boardState[4] === player && boardState[8] === player) ||
-        (boardState[2] === player && boardState[4] === player && boardState[6] === player)) {
-        return true;
-    }
-    return false;
-}
+/*function for current player. I dont know where we'll fix this function but whatever*/
+/* function changePlayer() {
+    currentPlayer = currentPlayer === "X"? "O" : "X"; */
+    //display a message below
+    /* STATUSDISPLAY.TEXTCONTENT = MESSAGE FOR CURRENT PLAYER TURN
+} */
 
-// Function to check if the board is full
-function isBoardFull() {
-    return !boardState.includes(" ");
-}
-
-// Function to reset the board
-function resetBoard() {
-    boardState = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
-    currentPlayer = player1;
-    renderBoard();
-}
-
-// Restart button
-restartBtn.addEventListener("dblclick", resetBoard);
-
-// Example usage
-handleCellClick(0); // X
-handleCellClick(4); // O
-handleCellClick(1); // X
-handleCellClick(7); // O
-handleCellClick(2); // X (wins)
+const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [1, 4, 7],
+    [2, 5, 6],
+    [0, 4, 8],
+    [0, 1, 2],
+    [2, 4, 6]
+];
