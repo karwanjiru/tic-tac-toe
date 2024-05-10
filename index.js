@@ -1,79 +1,106 @@
-const player1 = 'X'
-const player2 = 'O'
-const restartBtn = document.getElementById("restart-btn")
-let currentPlayer = player1
-// Initial board state
-let boardState = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+// Initialize game variables
+let currentPlayer = 'X';
+let gameOver = false;
+let board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
 
-// when cell is clicked function
-function handleCellClick(index) {
-    if (boardState[index] === " ") {
-        boardState[index] = currentPlayer;
-        renderBoard();
-        if (checkWin(currentPlayer)) {
-            console.log(currentPlayer + ' wins!');
-            resetBoard();
-        } else if (isBoardFull()) {
-            console.log('It\'s a draw!');
-        } else {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
-    }
-}
+// Get the board and restart button elements
+const boardEl = document.getElementById('board-el');
+const restartBtn = document.getElementById('restart-btn');
 
 // Function to render the game board
 function renderBoard() {
-    const boardEl = document.getElementById("board-el");
-    boardEl.innerHTML = " ";
-    boardState.forEach((cell, index) => {
-        const cellElement = document.createElement('div');
-        cellElement.classList.add('cell');
-        cellElement.textContent = cell;
-        cellElement.addEventListener('click', () => handleCellClick(index));
-        boardEl.appendChild(cellElement);
-    });
+    // Clear the board
+    boardEl.innerHTML = '';
+
+    // Loop through each cell in the board
+    for (let i = 0; i < board.length; i++) {
+        // Create a new cell element
+        const cellEl = document.createElement('div');
+        cellEl.classList.add('cell');
+        cellEl.textContent = board[i];
+
+        // Add a click event listener to the cell
+        cellEl.addEventListener('click', () => handleCellClick(i));
+
+        // Append the cell to the board
+        boardEl.appendChild(cellEl);
+    }
+}
+
+// Function to handle cell clicks
+function handleCellClick(index) {
+    // If the game is over, return early
+    if (gameOver) return;
+
+    // If the cell is already occupied, return early
+    if (board[index] !== ' ') return;
+
+    // Update the board with the current player's mark
+    board[index] = currentPlayer;
+
+    // Render the updated board
+    renderBoard();
+
+    // Check if the current player has won
+    if (checkWin(currentPlayer)) {
+        console.log(`${currentPlayer} wins!`);
+        gameOver = true;
+        resetBoard();
+    }
+
+    // Check if the board is full (draw)
+    else if (isBoardFull()) {
+        console.log('It\'s a draw!');
+        gameOver = true;
+        resetBoard();
+    }
+
+    // Switch to the other player
+    else {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
 }
 
 // Function to check if a player has won
 function checkWin(player) {
     // Check rows
     for (let i = 0; i < 3; i++) {
-        if (boardState[i] === player && boardState[i + 3] === player && boardState[i + 6] === player) {
+        if (board[i] === player && board[i + 3] === player && board[i + 6] === player) {
             return true;
         }
     }
+
     // Check columns
     for (let i = 0; i < 3; i++) {
-        if (boardState[i] === player && boardState[i + 1] === player && boardState[i + 2] === player) {
+        if (board[i] === player && board[i + 3 * 1] === player && board[i + 3 * 2] === player) {
             return true;
         }
     }
+
     // Check diagonals
-    if ((boardState[0] === player && boardState[4] === player && boardState[8] === player) ||
-        (boardState[2] === player && boardState[4] === player && boardState[6] === player)) {
+    if ((board[0] === player && board[4] === player && board[8] === player) ||
+        (board[2] === player && board[4] === player && board[6] === player)) {
         return true;
     }
+
     return false;
 }
 
 // Function to check if the board is full
 function isBoardFull() {
-    return !boardState.includes(" ");
+    return !board.includes(' ');
 }
 
 // Function to reset the board
 function resetBoard() {
-    boardState = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
-    currentPlayer = player1;
+    board.fill(' ');
+    currentPlayer = 'X';
+    gameOver = false;
     renderBoard();
 }
 
-// Restart button
-restartBtn.addEventListener("dblclick", resetBoard);
+// Add a click event listener to the restart button
+restartBtn.addEventListener('click', resetBoard);
 
-// Example usage
-handleCellClick(0); // X
-handleCellClick(4); // O
-handleCellClick(1); // X
-handleCellClick(7); // O
-handleCellClick(2); // X (wins)
+// Render the initial board
+renderBoard();
